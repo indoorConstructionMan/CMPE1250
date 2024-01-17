@@ -1,7 +1,7 @@
 /********************************************************************/
 // HC12 Program:  ICA01 - LED Blink Program
 // Processor:     MC9S12XDP512
-// Bus Speed:     MHz
+// Bus Speed:     40 MHz
 // Author:        Aaron Arnason
 // Details:       This program blinks a RED LED on and off ad infinitum
 // Date:          January 17, 2024
