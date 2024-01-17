@@ -4,7 +4,7 @@
 // Bus Speed:     MHz
 // Author:        Aaron Arnason
 // Details:       This program blinks a RED LED on and off ad infinitum
-// Date:          January 12, 2024
+// Date:          January 17, 2024
 // Revision History :
 //  each revision will have a date + desc. of changes
 
