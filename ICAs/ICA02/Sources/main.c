@@ -13,7 +13,7 @@
 /********************************************************************/
 // Library includes
 /********************************************************************/
-#include <hidef.h>      /* common defines and macros */
+#include <hidef.h>      /* common defines and macros  */
 #include "derivative.h" /* derivative-specific definitions */
 
 //Other system includes or your includes go here
