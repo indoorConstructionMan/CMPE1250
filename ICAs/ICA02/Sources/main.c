@@ -3,8 +3,9 @@
 // Processor:     MC9S12XDP512
 // Bus Speed:     40 MHz
 // Author:        Aaron Arnason
-// Details:       Red light is on when green light is not, Red light 
-//                is on 3x longer than green light.               
+// Details:       Switches between red light and green light. Changing
+//                comparisonValue will modify how long each light is turned
+//                on.              
 // Date:          January 17, 2024
 // Revision History :
 //  each revision will have a date + desc. of changes
@@ -39,7 +40,9 @@ unsigned int uiMainLoopCount = 0;
 /********************************************************************/
 // Constants
 /********************************************************************/
-const int comparisonValue = 0x1000;
+// changed to 0x8000 from 0x1000 because now it shows the lights switching
+// between the two.
+const int comparisonValue = 0x8000;
 /********************************************************************/
 // Main Entry
 /********************************************************************/
@@ -80,7 +83,7 @@ void RED(unsigned int bOn) {
   if (bOn < comparisonValue) 
   {
     // turn red led on
-    PT1AD1 |= (byte)(((unsigned long)1 << (7)));
+    PT1AD1 |= 0x80;     //(byte)(((unsigned long)1 << (7)));
   }
   else
   {
