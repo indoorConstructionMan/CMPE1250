@@ -1,10 +1,10 @@
 /********************************************************************/
-// HC12 Program:  YourProg - MiniExplanation
+// HC12 Program:  ICA02 - Convert C# to C
 // Processor:     MC9S12XDP512
-// Bus Speed:     MHz
-// Author:        This B. You
+// Bus Speed:     40 MHz
+// Author:        Aaron Arnason
 // Details:       A more detailed explanation of the program is entered here               
-// Date:          Date Created
+// Date:          January 17, 2024
 // Revision History :
 //  each revision will have a date + desc. of changes
 
@@ -28,11 +28,13 @@
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
+void RED (int bOn);
+void GREEN(int bOn);
 
 /********************************************************************/
 // Global Variables
 /********************************************************************/
-
+unsigned int uiMainLoopCount = 0;
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -51,7 +53,8 @@ void main(void)
 /********************************************************************/
   // one-time initializations
 /********************************************************************/
-
+  PT1AD1 &= 0x1F;
+  DDR1AD1 = 0xE0;
 
 /********************************************************************/
   // main program loop
@@ -59,7 +62,9 @@ void main(void)
 
   for (;;)
   {
-
+    ++uiMainLoopCount;
+    RED(uiMainLoopCount < 0x1000);
+    GREEN(uiMainLoopCount >= 0x1000);
   }                   
 }
 
