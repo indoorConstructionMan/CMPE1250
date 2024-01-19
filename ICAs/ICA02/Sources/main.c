@@ -26,7 +26,7 @@
 /********************************************************************/
 //Defines
 /********************************************************************/
-
+ 
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
@@ -42,7 +42,7 @@ unsigned int uiMainLoopCount = 0;
 /********************************************************************/
 // changed to 0x8000 from 0x1000 because now it shows the lights switching
 // between the two.
-const int comparisonValue = 0x8000;
+const int comparisonValue = 0x1000;
 /********************************************************************/
 // Main Entry
 /********************************************************************/
@@ -83,12 +83,12 @@ void RED(unsigned int bOn) {
   if (bOn < comparisonValue) 
   {
     // turn red led on
-    PT1AD1 |= 0x80;     //(byte)(((unsigned long)1 << (7)));
+    PT1AD1 |= (byte)(((unsigned long)1 << (7))); // PT1AD1 |= 0x80;
   }
   else
   {
     // turn red led off
-    PT1AD1 &= 0x7F;
+    PT1AD1 &= 0x7F;   //PT1AD1 &= 0b01111111;
   }
 }
 
