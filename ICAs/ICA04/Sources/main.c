@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /********************************************************************/
 // HC12 Program:  ICA04 - GPIOs and LEDs
 // Processor:     MC9S12XDP512
@@ -95,3 +96,26 @@ void Trap1() {
 /********************************************************************/
 // Interrupt Service Routines
 /***********************************/
+=======
+#include <hidef.h>      /* common defines and macros */
+#include "derivative.h"      /* derivative-specific definitions */
+
+
+
+
+
+
+void main(void) {
+  /* put your own code here */
+  
+
+
+	EnableInterrupts;
+
+
+  for(;;) {
+    _FEED_COP(); /* feeds the dog */
+  } /* loop forever */
+  /* please make sure that you never leave main */
+}
+>>>>>>> 91ec8eb48609a6b83f3c98d1b872bddfc9cd5a48
