@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /********************************************************************/
 // HC12 Program:  ICA04 - GPIOs and LEDs
 // Processor:     MC9S12XDP512
@@ -42,8 +41,10 @@ void Trap(long value);
 /********************************************************************/
 // Global Variables
 /********************************************************************/
-long blockingVariable = 500000L;
+long blockingVariable = 124L;
+//unsigned int blockingVariable = 1000;
 
+unsigned int v = 500000;
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -54,7 +55,6 @@ long blockingVariable = 500000L;
 void main(void)
 {
   //Any main local variables must be declared here
-  long i = 0L;
   // main entry point
   _DISABLE_COP();
   //EnableInterrupts;
@@ -72,7 +72,7 @@ void main(void)
   for (;;)
   {
     ToggleRed();
-    Trap1();
+    Trap(blockingVariable);
   }                   
 }
 
