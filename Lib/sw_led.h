@@ -97,3 +97,6 @@ SwState Sw_Process(SwState*, SWL_SwitchPos); //Process state of a swicth in PT1A
 //Process debounced state of a swicth in PT1AD1
 SwState Sw_ProcessD(SwState*, SWL_SwitchPos); //port, SwState, PIN
 int GetLedCount(void);
+
+void OnOffDutyCycle (SWL_LEDColour led, long dutyOnCount, long dutyOffCount);
+int GetSwitchPushedCount(void);
