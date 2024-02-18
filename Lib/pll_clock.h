@@ -52,5 +52,6 @@ void Clock_Set40MHZ(void); //Set clock to 40MHZ using PLL
 /// @return current BUS speed
 unsigned long Clock_GetBusSpeed(void);
 
-
-void PLL_To20MHz (void);
+/// @brief Set clock to 80MHZ **Doesn't work
+/// @param
+void Clock_Set80MHZ(void);
