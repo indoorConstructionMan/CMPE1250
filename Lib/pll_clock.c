@@ -14,6 +14,7 @@ void Clock_EnableOutput(ClockOutDiv clk)
 void Clock_Set8MHZ(void) 
 {
     bus_speed = (DEF_BUS_CLOCK * 3) / 2;
+    CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
     // 5/4 (1.25) * 16Mhz * 2 = 40MHz
@@ -37,6 +38,7 @@ void Clock_Set8MHZ(void)
 void Clock_Set20MHZ (void)
 {
     bus_speed = (DEF_BUS_CLOCK * 5) / 4;
+    CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
     // 5/4 (1.25) * 16Mhz * 2 = 40MHz
@@ -60,12 +62,13 @@ void Clock_Set20MHZ (void)
 void Clock_Set24MHZ(void)
 {
     bus_speed = (DEF_BUS_CLOCK * 7) / 5;
+    CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
     // 5/4 (1.25) * 16Mhz * 2 = 40MHz
     // bus is PLLCLOCK / 2, 40MHz / 2 = 20MHz 2.3.2.1 + 2.3.2.2
-    SYNR = 6;
-    REFDV = 4;
+    SYNR = 2;
+    REFDV = 1;
     // we could go faster, but we want to remain stable!
     CLKSEL_PSTP = 1; // 2.3.2.6 (pseudo stop, oscillator runs in stop)
     PLLCTL = 0b11111111; // 2.3.2.7
@@ -82,6 +85,7 @@ void Clock_Set24MHZ(void)
 
 void Clock_Set40MHZ(void)
 {
+    CLKSEL_PLLSEL = 0;
     bus_speed = (DEF_BUS_CLOCK * 5) / 2;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
@@ -109,6 +113,7 @@ void Clock_Set80MHZ(void)
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
     // 5/4 (1.25) * 16Mhz * 2 = 40MHz
     // bus is PLLCLOCK / 2, 40MHz / 2 = 20MHz 2.3.2.1 + 2.3.2.2
+    CLKSEL_PLLSEL = 0;
     SYNR = 5;
     REFDV = 1;
     // we could go faster, but we want to remain stable!

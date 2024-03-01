@@ -33,8 +33,8 @@
 /********************************************************************/
 // Global Variables
 /********************************************************************/
-long blockingVariableOn = 8507L;
-long blockingVariableOff = 8507L;
+long blockingVariableOn = 17025L;
+long blockingVariableOff = 17025L;
 
 /********************************************************************/
 // Constants
@@ -66,16 +66,14 @@ void main(void)
   #endif
 
   #ifdef PART2
-    // ClockEnableOutput divider doesn't change OnOffDutyCycle
-    // Duty cycle changes with Clock_SetXXMHZ()
-    //Clock_Set20MHZ(); // sets clock to 20 mhz
-    //Clock_EnableOutput(ClockOutDiv4); // div1 = 20MHz, div2 = 10MHz, div3 = 6.67 MHz, div4 = 5Mhz
     
-    //Clock_Set24MHZ(); // sets clock to 24 mhz
-    //Clock_EnableOutput(ClockOutDiv2); // div1 = 24MHz, div2 = 12MHz, div3 = 8 MHz, div4 = 6 Mhz
-
-    Clock_Set40MHZ(); // sets clock to 40 mhz
-    Clock_EnableOutput(ClockOutDiv4); // div1 = 40MHz, div2 = 20MHz, div3 = 13.3 MHz, div4 = 10 Mhz
+    if (SWL_Pushed(SWL_LEFT) == 1) {
+      Clock_Set8MHZ();
+    } else if (SWL_Pushed(SWL_CTR) == 1) {
+      Clock_Set20MHZ();
+    } else if (SWL_Pushed(SWL_RIGHT) == 1) {
+      Clock_Set24MHZ();
+    }
     // Part 2
     for (;;) {
       OnOffDutyCycle(SWL_RED, blockingVariableOn, blockingVariableOff);
@@ -88,10 +86,14 @@ void main(void)
 /********************************************************************/
 // Calculate the cost per iteration
 // How long does it take for OnOffDutyCycle to run
-// I have a blocking delay of 100ms -> blocking method is called 2 times
-// per iteration -> 50 ms to run
+// I have a blocking delay of 100ms -> blocking method 
 
 // It is possible to run, but have you seen the clock signal at 8MHz vs 40MHz. 
 // 8MHz looks like a (rounded)square wave, and 40Mhz looks like a saw tooth wave.
 // As the frequency increases, the integrity of the wave becomes compromised. If 
 // this happens, it might cause the output to be unstable. ClockFreq * (synr+1/refdv+1)
+
+// bus_speed = 2 * PLLCLK
+// PLLCLK/2*OSCCLK = (SYNR + 1)/(REFDV + 1)
+// bus_speed = 24 -> pllCLk = 48
+// 48/32 = (SYNR+1)/(REFDV+1) = 3/2
