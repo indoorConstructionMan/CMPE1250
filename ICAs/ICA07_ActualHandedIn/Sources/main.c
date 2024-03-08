@@ -28,13 +28,26 @@
 /********************************************************************/
 
 //#define PART1
+//#define NONBLOCKING
+
 //#define PART2
-#define PART3
+//#define NONBLOCKING
+
+//#define PART3
+//#define NONBLOCKING
+
+
+
+//#define PART1BLOCK
+//#define PART2BLOCK
+#define PART3BLOCK
+
+void RightOn(void);
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
 // RTI interrupt prototype
-interrupt VectorNumber_Vrti void Vrti_ISR(void);
+//interrupt VectorNumber_Vrti void Vrti_ISR(void);
 
 /********************************************************************/
 // Global Variables
@@ -62,7 +75,7 @@ void main(void)
   // Init the Switches/LEDs
   SWL_Init();
   //EnableInterrupts;
-	EnableInterrupts;
+	//EnableInterrupts;
 
 /********************************************************************/
   // one-time initializations
@@ -85,7 +98,7 @@ void main(void)
         }
       }
 
-      SWL_TOG(SWL_RED);
+       SWL_TOG(SWL_RED);
       RTI_Delay_ms(toggleMilliseconds); 
     }
   #endif
@@ -146,16 +159,96 @@ void main(void)
       SWL_TOG(SWL_RED);
       RTI_Delay_ms(toggleMilliseconds); 
     }        
-  #endif         
+  #endif   
+
+  #ifdef PART1BLOCK
+  for (;;){
+    if (GetSwitchPushedCount() == 1) {
+        if (SWL_Pushed(SWL_UP) == 1) {
+          toggleMilliseconds = 8;
+        }
+
+        if (SWL_Pushed(SWL_DOWN) == 1) {
+          toggleMilliseconds = 12;
+        }
+      }
+
+      RTI_Delay(toggleMilliseconds);
+      SWL_TOG(SWL_RED);      
+  }
+  #endif
+
+  #ifdef PART2BLOCK
+  for (;;){
+    while(SWL_Pushed(SWL_LEFT) == 1) {
+        SWL_ON(SWL_RED);
+        RTI_Delay(1); 
+        SWL_OFF(SWL_RED);
+        RTI_Delay(9); 
+      }
+
+      if (GetSwitchPushedCount() == 1) {
+        if (SWL_Pushed(SWL_UP) == 1) {
+          toggleMilliseconds = 8;
+        }
+
+        if (SWL_Pushed(SWL_DOWN) == 1) {
+          toggleMilliseconds = 12;
+        }
+      }
+
+      RTI_Delay(toggleMilliseconds); 
+      SWL_TOG(SWL_RED);      
+  }
+  #endif
+
+  #ifdef PART3BLOCK
+  for (;;){
+    while(SWL_Pushed(SWL_RIGHT) == 1) { 
+        RightOn(); 
+      }
+      SWL_OFF(SWL_GREEN);
+
+      while(SWL_Pushed(SWL_LEFT) == 1) {
+        SWL_ON(SWL_RED);
+        RTI_Delay(1); 
+        SWL_OFF(SWL_RED);
+        RTI_Delay(9); 
+        if (SWL_Pushed(SWL_RIGHT) == 1) {
+          RightOn();
+        }
+      }
+
+      if (GetSwitchPushedCount() == 1) {
+        if (SWL_Pushed(SWL_UP) == 1) {
+          toggleMilliseconds = 8;
+        }
+
+        if (SWL_Pushed(SWL_DOWN) == 1) {
+          toggleMilliseconds = 12;
+        }
+      }
+
+      SWL_TOG(SWL_RED);
+      RTI_Delay(toggleMilliseconds); 
+      toggleMilliseconds = 10;
+  }
+  #endif      
 }
 
 /********************************************************************/
 // Functions
 /********************************************************************/
-
+void RightOn(void) {
+  while(SWL_Pushed(SWL_RIGHT) == 1) { 
+    SWL_OFF(SWL_RED);
+    SWL_ON(SWL_GREEN); 
+  }
+}
 /********************************************************************/
 // Interrupt Service Routines
 /********************************************************************/
+#ifdef NONBLOCKING
 interrupt VectorNumber_Vrti void Vrti_ISR(void)
 {
   CRGFLG = CRGFLG_RTIF_MASK; //clear flag;
@@ -168,3 +261,4 @@ interrupt VectorNumber_Vrti void Vrti_ISR(void)
   }
   rtiMasterCount++;
 }
+#endif

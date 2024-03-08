@@ -17,7 +17,7 @@ void RTI_Init(void)
     CRGINT |= CRGINT_RTIE_MASK;
 }
 
-
+// Non Blocking
 void RTI_Delay_ms(unsigned int ms) 
 {
     /*
@@ -28,4 +28,30 @@ void RTI_Delay_ms(unsigned int ms)
     */
     while(rtiMasterCount < ms){}
     rtiMasterCount = 0;
+}
+
+// Blocking delay for intervalms = n x 1ms
+void RTI_Delay(unsigned long Intervalms) {
+
+    // Turn off the RTI
+    CRGINT &= ~CRGINT_RTIE_MASK;
+
+    // if RTI Period over, clear flag
+    if (CRGFLG_RTIF) {
+        CRGFLG = CRGFLG_RTIF_MASK;
+    }
+
+    // Start the RTI with 1 ms (configured in RTI init)
+    CRGINT |= CRGINT_RTIE_MASK;
+
+    // loop
+    while (Intervalms > 0) {
+        if (CRGFLG_RTIF) {
+            CRGFLG = CRGFLG_RTIF_MASK; 
+            Intervalms--;
+        }
+    }
+
+    // Turn off the RTI
+    CRGINT &= ~CRGINT_RTIE_MASK;
 }
