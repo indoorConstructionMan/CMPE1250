@@ -3,7 +3,6 @@
 #include "pll_clock.h"
 #include "sw_led.h"
 #include "sci.h"
-#include "misc.h"
 
 
 void sci0_Init(void){
