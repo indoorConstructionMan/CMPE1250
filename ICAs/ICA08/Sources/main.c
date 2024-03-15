@@ -18,6 +18,9 @@
 #include "derivative.h" /* derivative-specific definitions */
 #include "sw_led.h"     /* For LED/Switch Functions */
 #include "pll_clock.h"  /* Set bus speed to 20Mhz */
+#include "rti.h"
+#include "sci.h"
+#include "misc.h"
 
 //Other system includes or your includes go here
 //#include <stdlib.h>
@@ -33,10 +36,11 @@
 /********************************************************************/
 // RTI interrupt prototype
 //interrupt VectorNumber_Vrti void Vrti_ISR(void);
-
+int isVowel(unsigned char pData);
 /********************************************************************/
 // Global Variables
 /********************************************************************/
+unsigned char vowels[10] = {'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'};
 
 /********************************************************************/
 // Constants
@@ -48,7 +52,7 @@
 void main(void)
 {
   //Any main local variables must be declared here
-  char data = 'A';
+  unsigned char data = 'A';
   // main entry point
   _DISABLE_COP();
   // Set Bus Speed
@@ -56,7 +60,7 @@ void main(void)
   // Init the Switches/LEDs
   SWL_Init();
   //EnableInterrupts;
-	
+	RTI_Init();
   // Init the SCI Module
   sci0_Init();
 
@@ -68,25 +72,33 @@ void main(void)
   // main program loop
 /********************************************************************/
   for (;;) {
-    // If the buffer is empty, write a value: 
-    if (SCI0SR1_TDRE) {
-      SWL_ON(SWL_RED);
-      SCI0DRL = data;
+    RTI_Delay(50);
+    SWL_TOG(SWL_RED);
+    data = GetRandom(65, 90);
+    sci0_txByte(data);
+    if (sci0_read(&data)) {
+      if(isVowel(data)) {
+        SWL_OFF(SWL_YELLOW);
+        SWL_ON(SWL_GREEN);
+      } else {
+        SWL_OFF(SWL_GREEN);
+        SWL_ON(SWL_YELLOW);
+      }
     }
-
-    // if data available turn green led on
-    if (SCI0SR1_RDRF) {
-      SWL_ON(SWL_GREEN);
-      data = SCI0DRL;
-    }
-
   }
 }
 
 /********************************************************************/
 // Functions
 /********************************************************************/
-
+int isVowel(unsigned char pData) {
+  // a, e, i, o, u
+  int i;
+  for (i = 0; i < 10; i++){
+    if (vowels[i] == pData) return 1;
+  }
+  return 0;
+}
 /********************************************************************/
 // Interrupt Service Routines
 /********************************************************************/

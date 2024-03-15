@@ -52,15 +52,20 @@ typedef SCI_Typedef* SCI_Base;
 
 /* BASIC FUNCTIONS, to be coded in CMPE1250*******************************/
 //SCI0 - Normal mode: RDX0-> PS0 (PIN 89), TDX0-> PS1 (PIN 90)
+
+
+
 // set baud, returns actual baud
 void sci0_Init(void);
 
 // Receive a byte from SCI
 int sci0_read (unsigned char * pData);
 
-
 // send a byte over SCI
 void sci0_txByte (unsigned char data);
+
+
+
 
 // blocking byte read
 // waits for a byte to arrive and returns it
