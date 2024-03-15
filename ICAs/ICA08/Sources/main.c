@@ -14,6 +14,7 @@
 // Library includes
 /********************************************************************/
 #include <hidef.h>      /* common defines and macros */
+#include <stdlib.h>
 #include "derivative.h" /* derivative-specific definitions */
 #include "sw_led.h"     /* For LED/Switch Functions */
 #include "pll_clock.h"  /* Set bus speed to 20Mhz */
@@ -56,11 +57,8 @@ void main(void)
   SWL_Init();
   //EnableInterrupts;
 	
-  // Set baud rate using 20 mhz bus
-  SCI0BD = 130;
-
-  // Enable TX/RX of SCI module
-  SCI0CR2 |= SCI0CR2_RE_MASK | SCI0CR2_TE_MASK;
+  // Init the SCI Module
+  sci0_Init();
 
 /********************************************************************/
   // one-time initializations
