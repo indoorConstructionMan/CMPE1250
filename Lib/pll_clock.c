@@ -13,7 +13,7 @@ void Clock_EnableOutput(ClockOutDiv clk)
 
 void Clock_Set8MHZ(void) 
 {
-    bus_speed = (DEF_BUS_CLOCK * 3) / 2;
+    bus_speed = DEF_BUS_CLOCK;
     CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
@@ -37,7 +37,7 @@ void Clock_Set8MHZ(void)
 
 void Clock_Set20MHZ (void)
 {
-    bus_speed = (DEF_BUS_CLOCK * 5) / 4;
+    bus_speed = 20000000;
     CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
@@ -61,7 +61,7 @@ void Clock_Set20MHZ (void)
 
 void Clock_Set24MHZ(void)
 {
-    bus_speed = (DEF_BUS_CLOCK * 7) / 5;
+    bus_speed = 24000000;
     CLKSEL_PLLSEL = 0;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
@@ -86,7 +86,7 @@ void Clock_Set24MHZ(void)
 void Clock_Set40MHZ(void)
 {
     CLKSEL_PLLSEL = 0;
-    bus_speed = (DEF_BUS_CLOCK * 5) / 2;
+    bus_speed = 40000000;
     // PLLCLK = 2 x OSCCLK x ([SYNR + 1] / [REFDV + 1])
     // PLLCLK = 2 x 16Mhz x ([4 + 1] / [3 + 1])
     // 5/4 (1.25) * 16Mhz * 2 = 40MHz

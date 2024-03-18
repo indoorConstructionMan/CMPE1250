@@ -52,19 +52,65 @@ typedef SCI_Typedef* SCI_Base;
 
 /* BASIC FUNCTIONS, to be coded in CMPE1250*******************************/
 //SCI0 - Normal mode: RDX0-> PS0 (PIN 89), TDX0-> PS1 (PIN 90)
+typedef enum eBaudRate 
+{
+    // round(bus_speed / (16 * baudrate))
+    BAUD_300_BUS8MHZ = 1667,   // 1666.66666666
+    BAUD_1200_BUS8MHZ = 417,   // 416.666666666
+    BAUD_9600_BUS8MHZ = 52,    // 52.0833333333
+    BAUD_19200_BUS8MHZ = 26,   // 26.0416666666
+    BAUD_38400_BUS8MHZ = 13,   // 13.0208333333
+    BAUD_57600_BUS8MHZ = 9,    // 8.68055555555
 
+    // No PLL Used
+    BAUD_300_BUS16MHZ = 1667,   // 1666.66666666
+    BAUD_1200_BUS16MHZ = 417,   // 416.666666666
+    BAUD_9600_BUS16MHZ = 52,    // 52.0833333333
+    BAUD_19200_BUS16MHZ = 26,   // 26.0416666666
+    BAUD_38400_BUS16MHZ = 13,   // 13.0208333333
+    BAUD_57600_BUS16MHZ = 9,    // 8.68055555555
 
+    BAUD_300_BUS20MHZ = 4167,   // 4166.66666666 Overflow but works
+    BAUD_1200_BUS20MHZ = 1042,  // 1041.66666666
+    BAUD_9600_BUS20MHZ = 130,   // 130.208333333
+    BAUD_19200_BUS20MHZ = 65,   // 65.1041666666
+    BAUD_38400_BUS20MHZ = 33,   // 32.5520833333
+    BAUD_57600_BUS20MHZ = 22,   // 21.7013888888
+    BAUD_115200_BUS20MHZ = 11,  // 10.8506944444
 
-// set baud, returns actual baud
+    BAUD_300_BUS24MHZ = 5000,   // 5000.00000000 Overflow but works
+    BAUD_1200_BUS24MHZ = 1250,  // 1250.00000000
+    BAUD_9600_BUS24MHZ = 156,   // 156.250000000
+    BAUD_19200_BUS24MHZ = 78,   // 78.1250000000
+    BAUD_38400_BUS24MHZ = 39,   // 39.0625000000
+    BAUD_57600_BUS24MHZ = 26,   // 26.0416666666
+    BAUD_115200_BUS24MHZ = 13,  // 13.0208333333
+
+    //BAUD_300_BUS40MHZ = 8333,   // 8333. Not Possible (8333 > 12 bits) does not work
+    BAUD_1200_BUS40MHZ = 2083,  // 2083.33333333
+    BAUD_9600_BUS40MHZ = 260,   // 260.416666666
+    BAUD_19200_BUS40MHZ = 130,  // 130.208333333
+    BAUD_38400_BUS40MHZ = 65,   // 65.1041666666
+    BAUD_57600_BUS40MHZ = 43,   // 43.4027777777
+    BAUD_115200_BUS40MHZ = 22,  // 21.7013888888
+    BAUD_230400_BUS40MHZ = 11  // 10.8506944444
+
+} BaudRate;
+
+// default 9600 baud rate. Hard coded.
 void sci0_Init(void);
+
+// set baud rate using Enum
+void sci0_InitEnum(BaudRate br);
+
+// Programmatic Route
+unsigned long sci0_InitMath (unsigned long ulBusClock, unsigned long ulBaudRate);
 
 // Receive a byte from SCI
 int sci0_read (unsigned char * pData);
 
 // send a byte over SCI
 void sci0_txByte (unsigned char data);
-
-
 
 
 // blocking byte read
