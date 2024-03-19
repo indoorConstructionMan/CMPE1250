@@ -40,6 +40,12 @@ int sci0_read(unsigned char * pData){
     return 0;
 }
 
+// Blocking Read
+unsigned char sci0_bread(void){
+  while (!SCI0SR1_RDRF) {}
+  return SCI0DRL;
+}
+
 // blocking transmit
 void sci0_txByte (unsigned char data) {
   while (!SCI0SR1_TDRE) {}
@@ -48,9 +54,18 @@ void sci0_txByte (unsigned char data) {
 
 // Transmit an entire string
 void sci0_txStr(char const * straddr) {
-  while(1) {
+  int i = 0;
+  while(*(straddr + i) != '\0') {
+    sci0_txByte(*(straddr + i));
+    i++;
+  }
+}
+
+
+/*
+while(1) {
     if (*straddr == '\0') break;
     sci0_txByte(*straddr);
     straddr++;
   }
-}
+*/
