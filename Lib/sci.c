@@ -23,7 +23,7 @@ void sci0_InitEnum(BaudRate br){
 unsigned long sci0_InitMath (unsigned long ulBusClock, unsigned long ulBaudRate){
   unsigned long denominator = ulBaudRate * 16; 
   unsigned long actualBaud = ulBusClock / (((((ulBusClock / denominator) * 10)+ 5) / 10) * 16) ;
-  SCI0BD = ((((ulBusClock / denominator) * 10)+ 5) / 10);
+  SCI0BD = ((((ulBusClock * 10) / denominator)+ 5) / 10);
 
   // Enable TX/RX of SCI module
   SCI0CR2 |= SCI0CR2_RE_MASK | SCI0CR2_TE_MASK;

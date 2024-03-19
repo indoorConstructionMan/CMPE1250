@@ -24,7 +24,7 @@
 
 //Other system includes or your includes go here
 //#include <stdlib.h>
-//#include <stdio.h>
+#include <stdio.h>
 
 
 /********************************************************************/
@@ -44,9 +44,11 @@ void stringFromInt(int summation, char* mySumStr);
 // Global Variables
 /********************************************************************/
 unsigned long baudRate = 19200;
+
 unsigned long bps;
 int i = 0;
 int index;
+int txStringsCount = 0;
 
 unsigned char UpperCaseVowels[5] = {'A', 'E', 'I', 'O', 'U'};
 unsigned char LowerCaseVowels[5] = {'a', 'e', 'i', 'o', 'u'};
@@ -60,6 +62,9 @@ unsigned long sum;
 
 unsigned int UpperCaseVowelsIntValues[5] = {65, 69, 73, 79, 85};
 unsigned int LowerCaseVowelsIntValues[5] = {97, 101, 105, 111, 117};
+
+
+char count[20];
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -142,7 +147,7 @@ void main(void)
   sci0_txStr("Aaron Arnason");
   sci0_txStr("\x1b[37m");
   sci0_txStr("\r\n");
-
+  txStringsCount = 5;
 #ifdef PART3
   for (;;) {
     RTI_Delay(250);
@@ -165,6 +170,7 @@ void main(void)
     stringFromInt(sum, mySumStr);
 
     SWL_ON(SWL_RED);
+
     sci0_txStr("\x1b[0;0H"); // 0,0
     sci0_txStr("\x1b[1B");   // next row
     sci0_txStr("\x1b[1B");   // next row == 3rd row
@@ -181,8 +187,12 @@ void main(void)
     sci0_txStr("\x1b[1B"); 
     sci0_txStr("\x1b[1B"); 
     sci0_txStr("\x1b[37m");  // default color white
-    sci0_txStr("Count");  
+    sci0_txStr("Count: ");  
     
+    txStringsCount += 18;
+    sprintf(count, "%d", txStringsCount);
+    sci0_txStr(count);  
+
     SWL_OFF(SWL_RED);
   }
 #endif
