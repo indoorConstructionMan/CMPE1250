@@ -67,21 +67,21 @@ char *myCommands[] = {
     "set GREEN off\0",  //5
     "set YELLOW on\0",
     "set YELLOW off\0",
-    "set LEDS on",
-    "set LEDS off",
+    "set LEDS on\0",
+    "set LEDS off\0",
     "clear\0",  //10
-    "set FG red",
-    "set FG green",
-    "set FG blue",
-    "set FG white",
-    "set BG white",  //15
-    "set BG black",
-    "set BG red",
-    "set BG green",
-    "set BG blue",
-    "set BAUD 9600",  // 20
-    "set BAUD 115200",
-    "lscmds"
+    "set FG red\0",
+    "set FG green\0",
+    "set FG blue\0",
+    "set FG white\0",
+    "set BG white\0",  //15
+    "set BG black\0",
+    "set BG red\0",
+    "set BG green\0",
+    "set BG blue\0",
+    "set BAUD 9600\0",  // 20
+    "set BAUD 115200\0",
+    "lscmds\0"
   };
 /********************************************************************/
 // Constants
