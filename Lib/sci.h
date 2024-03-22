@@ -20,6 +20,14 @@ If we create a pointer to a structure of this type and make it point to the
 proper SCI Base address, we can use the advanced funtions that would work 
 with any sci
 */
+// Lab 1
+typedef enum OP
+{
+  AND_OPERATION,
+  OR_OPERATION
+} operation;
+
+
 typedef struct SCI_Typedef__
 {
     //SCIBD OFFSET: 0x0
@@ -125,8 +133,16 @@ unsigned char sci0_rxByte(unsigned char * pData);
 void sci0_txStr (char const * straddr);
 
 /* BASIC FUNCTIONS END*******************************************************/
+//Lab 1 functions
+int sci0_Peek(void);
+void sci0_GoToXY(int iRow, int iCol);
+void sci0_txStrXY(int iRow, int iCol, char const * straddr);
+void sci0_ClearScreen(void);
+void sci0_ShowBin16(unsigned int iVal);
 
-
+void sci0_drawStaticData(void);
+void sci0_DrawState(unsigned int iOPA, unsigned int iOPB, operation op);
+void sci0_DrawOperator(operation op);
 
 /* Other SCIs "Available". These items are optional, for other SCI ports
 SCI1 - IRDA mode for using IR module - RDX1-> PS2 (PIN 91), TDX1-> PS3 (PIN 92)
