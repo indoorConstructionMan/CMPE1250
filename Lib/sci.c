@@ -63,6 +63,17 @@ void sci0_txStr(char const * straddr) {
   }
 }
 
+
+int sci0_read1 (unsigned char * pData)
+  {
+  if (SCI0SR1_RDRF)
+  {
+    *pData = SCI0DRL;
+    return 1;
+  }
+  return 0;
+}
+
 // not tested
 int sci0_Peek(void) {
   if (SCI0SR1 & SCI0SR1_RDRF_MASK) return 1;

@@ -25,7 +25,7 @@
 #include "misc.h"
 
 //Other system includes or your includes go here
-//#include <stdlib.h>
+#include <stdlib.h>
 
 /********************************************************************/
 //Defines
@@ -38,13 +38,23 @@
 /********************************************************************/
 // Global Variables
 /********************************************************************/
-unsigned long baudRate = 19200;
+unsigned long baudRate = 38400;
 unsigned long bps;
 
-int bufferSize = 100;
-char buffer[100];
+//int bufferSize = 100;
+//char buffer[100];
 
 int i = 0;
+unsigned int column = 0;
+int count = 0;
+char myChar = '.';
+unsigned int data;
+
+int color = 0;
+
+char colorChar = ' ';
+
+char numStrings[100];
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -82,22 +92,64 @@ void main(void)
 /********************************************************************/
   // one-time initializations
 /********************************************************************/
-  buffer[99] = '\0';
+  //buffer[99] = '\0';
 /********************************************************************/
   // main program loop
 /********************************************************************/
   for (;;) {
-    sci0_txStrXY(4, 4, buffer);
 
-    for (i = 0; i < bufferSize; i++) {
-      buffer[i] = sci0_bread();
-      //sci0_txByte(buffer[i]);
-      if (buffer[i] == 0xD) { //enter key
-        sci0_txStr("\r\n");
-        break;
-      } 
+    if (SWL_Pushed(SWL_UP) == 1) {
+      myChar = '!';
+    } else if (SWL_Pushed(SWL_DOWN) == 1) {
+      myChar = '?';
+    } else if (SWL_Pushed(SWL_CTR) == 1) {
+      myChar = '.';
     }
-    buffer[i] = '\0';
+
+    RTI_Delay(10);
+    SWL_TOG(SWL_RED);
+    //sci0_txByte('A');
+    if (i % 10 == 0) {
+      sci0_txByte(myChar);
+      SWL_TOG(SWL_GREEN);
+      i=0;
+    } 
+    i++;
+
+    // Part b
+    //80 columns
+  
+    if (sci0_read1(&colorChar) == 1) {
+      if (colorChar == 'r' || colorChar == 'R') {
+        color = 1;
+      } else if (colorChar == 'g' || colorChar == 'G') {
+        color = 2;
+      } else if (colorChar == 'b' || colorChar == 'B') {
+        color = 3;
+      }
+    }
+
+    if (color == 0) {
+      sci0_txStr("\x1b[37m");   //  white
+    } else if (color == 1) {
+      sci0_txStr("\x1b[31m");   // red
+    } else if (color == 2) {
+      sci0_txStr("\x1b[32m");   // green
+    } else if (color == 3) {
+      sci0_txStr("\x1b[34m");    // blue
+    }
+
+    sci0_GoToXY(0,0);
+    sprintf(numStrings, "%05u", column);
+    sci0_txStr(numStrings);
+
+    sci0_txStr("\x1b[37m");   //  white
+
+    sci0_GoToXY(3,column%80);
+    data = GetRandom(65, 90);
+
+    sci0_txByte((unsigned char)myChar);
+    column++;
   }
 
 }
@@ -111,3 +163,14 @@ void main(void)
 // Interrupt Service Routines
 /********************************************************************/
 
+/**sci0_txStrXY(4, 4, buffer);
+
+    for (i = 0; i < bufferSize; i++) {
+      buffer[i] = sci0_bread();
+      //sci0_txByte(buffer[i]);
+      if (buffer[i] == 0xD) { //enter key
+        sci0_txStr("\r\n");
+        break;
+      } 
+    }
+    buffer[i] = '\0';*/

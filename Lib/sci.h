@@ -132,6 +132,8 @@ unsigned char sci0_rxByte(unsigned char * pData);
 // send a null-terminated string over SCI
 void sci0_txStr (char const * straddr);
 
+int sci0_read1 (unsigned char * pData);
+
 /* BASIC FUNCTIONS END*******************************************************/
 //Lab 1 functions
 int sci0_Peek(void);
