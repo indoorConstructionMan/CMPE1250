@@ -162,15 +162,3 @@ void main(void)
 /********************************************************************/
 // Interrupt Service Routines
 /********************************************************************/
-
-/**sci0_txStrXY(4, 4, buffer);
-
-    for (i = 0; i < bufferSize; i++) {
-      buffer[i] = sci0_bread();
-      //sci0_txByte(buffer[i]);
-      if (buffer[i] == 0xD) { //enter key
-        sci0_txStr("\r\n");
-        break;
-      } 
-    }
-    buffer[i] = '\0';*/
