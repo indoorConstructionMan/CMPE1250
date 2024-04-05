@@ -47,7 +47,7 @@ unsigned int HexArrayToUInt16(char *pArray) {
   // max value for array is 4 elements.
   int pArrayLen = 4;
   int i = 0;
-  unsigned int myBinaryValue;
+  unsigned int myBinaryValue = 0;
   for (i = 0; i < pArrayLen; i++) {
     myBinaryValue += ToDigitVal(*(pArray + pArrayLen - i - 1)) * Power(16, i);
   }

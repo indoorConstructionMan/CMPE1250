@@ -1,10 +1,10 @@
 /********************************************************************/
-// HC12 Program:  ICA08 - SCI library
+// HC12 Program:  LAB1 - Calculator
 // Processor:     MC9S12XDP512
 // Bus Speed:     20 MHz
 // Author:        Aaron Arnason
 // Details:       This program uses interrupts to generate a 1 second delay
-// Date:          March 13, 2024
+// Date:          April 5, 2024
 // Revision History :
 //  each revision will have a date + desc. of changes
 
@@ -41,7 +41,12 @@ char myOperand2[4];
 char *operand1;
 char *operand2;
 
-int xPositionOperand1, yPositionOperand1, xPositionOperand2, yPositionOperand2;
+unsigned char character;
+operation currentOp = AND_OPERATION;
+
+int xPosition = 0, yPosition = 0;
+int xOffset = 13,yOffset = 5;
+char myDigits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -51,8 +56,7 @@ int xPositionOperand1, yPositionOperand1, xPositionOperand2, yPositionOperand2;
 /********************************************************************/
 void main(void)
 {
-  //char myDigits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-  //int i = 0;
+  int i = 0;
   // Any main local variables must be declared here
   //  main entry point
   _DISABLE_COP();
@@ -80,8 +84,25 @@ void main(void)
   for (;;)
   {
     sci0_GoToXY(8, 11);
-    sci0_DrawState(2, 3, AND_OPERATION);
-    RTI_Delay(5000);
+    sci0_DrawState("ABCD", "1234", currentOp);
+    character = sci0_bread();
+    if (character == '\x09') {
+      if (currentOp == AND_OPERATION) {
+        currentOp = OR_OPERATION;
+      } else if (currentOp == OR_OPERATION) {
+        currentOp = AND_OPERATION;
+      } 
+    } else if (character == '&') {
+      currentOp = AND_OPERATION;
+    } else if (character == '|') {
+      currentOp = OR_OPERATION;
+    } else {
+      for (i = 0; i < 16; i++){
+        if (character == myDigits[i]) {
+          sci0_txStrXY(xOffset + xPosition, yOffset + yPosition, (char*)&character);
+        }
+      }
+    }
   }
 }
 

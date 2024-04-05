@@ -2,6 +2,7 @@
 #include "derivative.h" /* derivative-specific definitions */
 #include <stdio.h>
 #include "sci.h"
+#include "misc.h"
 
 
 void sci0_Init(void){
@@ -127,13 +128,39 @@ void sci0_drawStaticData(void) {
 
 
 void sci0_DrawState(char *iOPA, char *iOPB, operation op) {
-  sci0_txStrXY(5, 11, "0x1234");
-  sci0_txStrXY(5, 19, "04660");
-  sci0_txStrXY(6, 11, "0xABCD");
-  sci0_txStrXY(6, 19, "43981");
-  sci0_txStrXY(8, 11, "0001001000110100");
-  sci0_txStrXY(9, 11, "1010101111001101");
-  sci0_txStrXY(11, 11, "0000001000000100");
+  char hexiOPA[7], hexiOPB[7];
+  char charDeciOPA[7], charDeciOPB[7];
+  unsigned int result;
+
+  if(sprintf(hexiOPA, "0x%s", iOPA)) {
+    sci0_txStrXY(5, 11, hexiOPA);  
+  }
+
+  if (sprintf(hexiOPB, "0x%s", iOPB)) {
+    sci0_txStrXY(6, 11, hexiOPB);
+  }
+
+  sci0_GoToXY(8, 11);
+  sci0_ShowBin16(HexArrayToUInt16(iOPA));
+
+  sci0_GoToXY(9, 11);
+  sci0_ShowBin16(HexArrayToUInt16(iOPB));
+
+  if (op == AND_OPERATION) {
+    result = HexArrayToUInt16(iOPB) & HexArrayToUInt16(iOPA);
+  } else if (OR_OPERATION) {
+    result = HexArrayToUInt16(iOPB) | HexArrayToUInt16(iOPA);
+  }
+
+  sprintf(charDeciOPB, "%05u", HexArrayToUInt16(iOPB));
+  sprintf(charDeciOPA, "%05u", HexArrayToUInt16(iOPA));
+  
+  sci0_txStrXY(5, 19, charDeciOPA); 
+  sci0_txStrXY(6, 19, charDeciOPB);
+
+  sci0_GoToXY(11, 11);
+  sci0_ShowBin16(result);
+
   sci0_DrawOperator(op);
   sci0_GoToXY(5, 13);
 }
