@@ -143,7 +143,7 @@ void sci0_ClearScreen(void);
 void sci0_ShowBin16(unsigned int iVal);
 
 void sci0_drawStaticData(void);
-void sci0_DrawState(unsigned int iOPA, unsigned int iOPB, operation op);
+void sci0_DrawState(char *iOPA, char *iOPB, operation op);
 void sci0_DrawOperator(operation op);
 
 /* Other SCIs "Available". These items are optional, for other SCI ports

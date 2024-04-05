@@ -51,8 +51,8 @@ int xPositionOperand1, yPositionOperand1, xPositionOperand2, yPositionOperand2;
 /********************************************************************/
 void main(void)
 {
-  char myDigits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-  int i = 0;
+  //char myDigits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+  //int i = 0;
   // Any main local variables must be declared here
   //  main entry point
   _DISABLE_COP();
@@ -80,7 +80,7 @@ void main(void)
   for (;;)
   {
     sci0_GoToXY(8, 11);
-    sci0_DrawState(2,3, AND_OPERATION);
+    sci0_DrawState(2, 3, AND_OPERATION);
     RTI_Delay(5000);
   }
 }

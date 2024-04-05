@@ -126,7 +126,7 @@ void sci0_drawStaticData(void) {
 }
 
 
-void sci0_DrawState(unsigned int iOPA, unsigned int iOPB, operation op) {
+void sci0_DrawState(char *iOPA, char *iOPB, operation op) {
   sci0_txStrXY(5, 11, "0x1234");
   sci0_txStrXY(5, 19, "04660");
   sci0_txStrXY(6, 11, "0xABCD");
