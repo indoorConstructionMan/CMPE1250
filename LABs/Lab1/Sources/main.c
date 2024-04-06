@@ -35,8 +35,8 @@
 unsigned long baudRate = 38400;
 unsigned long calculatedBaudRate;
 
-char myOperand1[4];
-char myOperand2[4];
+char myOperand1[5] = {'0', '0', '0', '0', '\0'};
+char myOperand2[5] = {'0', '0', '0', '0', '\0'};
 
 char *operand1;
 char *operand2;
@@ -45,7 +45,7 @@ unsigned char character;
 operation currentOp = AND_OPERATION;
 
 int xPosition = 0, yPosition = 0;
-int xOffset = 13,yOffset = 5;
+int xOffset = 5, yOffset = 13;
 char myDigits[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 /********************************************************************/
 // Constants
@@ -84,22 +84,76 @@ void main(void)
   for (;;)
   {
     sci0_GoToXY(8, 11);
-    sci0_DrawState("ABCD", "1234", currentOp);
+
+    // Draw all dynamic data
+    sci0_DrawState(operand1, operand2, currentOp);
+
+    // set cursor to the correct position being edited (so it blinks at correct position)
+    sci0_GoToXY(xOffset + yPosition, yOffset + xPosition);
+
+    // Blocking read, waiting for character from user.
     character = sci0_bread();
+
+    // if character is tab, change the operand and start at the beginning
     if (character == '\x09') {
-      if (currentOp == AND_OPERATION) {
-        currentOp = OR_OPERATION;
-      } else if (currentOp == OR_OPERATION) {
-        currentOp = AND_OPERATION;
+      if (yPosition == 0) {
+        xPosition = 0;
+        yPosition = 1;
+      } else {
+        xPosition = 0;
+        yPosition = 0;
       } 
-    } else if (character == '&') {
+    } 
+    
+    // If character was instead ampersand or Vertical bar, set the appropriate operator (to be passed to drawstate)
+    else if (character == '&') {
       currentOp = AND_OPERATION;
     } else if (character == '|') {
       currentOp = OR_OPERATION;
-    } else {
+    } 
+    
+    // else we only want to make changes if the user passes in a valid ascii key (including upper case and lower case abcdef. 0-9)
+    // based on that we assign character to operand, and increase the position to the next position
+    else {
       for (i = 0; i < 16; i++){
         if (character == myDigits[i]) {
-          sci0_txStrXY(xOffset + xPosition, yOffset + yPosition, (char*)&character);
+          if (yPosition == 0) {
+            operand1[xPosition%4] = character;
+            xPosition++;
+          } else {
+            operand2[xPosition%4] = character;
+            xPosition++;
+          }
+          if (xPosition == 4) {
+            xPosition = 0;
+            if (yPosition == 0) {
+              yPosition = 1;
+            } else {
+              yPosition = 0;
+            }
+          }
+        }
+
+        // This just handles the characters that are lower case.
+        if (i > 9) {
+          if (character == (myDigits[i] + 32)) {
+            if (yPosition == 0) {
+            operand1[xPosition%4] = character;
+            xPosition++;
+          } else {
+            operand2[xPosition%4] = character;
+            xPosition++;
+          }
+          if (xPosition == 4) {
+            xPosition = 0;
+            if (yPosition == 0) {
+              yPosition = 1;
+            } else {
+              yPosition = 0;
+            }
+          }
+
+          }
         }
       }
     }

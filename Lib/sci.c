@@ -148,15 +148,17 @@ void sci0_DrawState(char *iOPA, char *iOPB, operation op) {
 
   if (op == AND_OPERATION) {
     result = HexArrayToUInt16(iOPB) & HexArrayToUInt16(iOPA);
-  } else if (OR_OPERATION) {
+  } else if (op == OR_OPERATION) {
     result = HexArrayToUInt16(iOPB) | HexArrayToUInt16(iOPA);
   }
 
-  sprintf(charDeciOPB, "%05u", HexArrayToUInt16(iOPB));
-  sprintf(charDeciOPA, "%05u", HexArrayToUInt16(iOPA));
-  
-  sci0_txStrXY(5, 19, charDeciOPA); 
-  sci0_txStrXY(6, 19, charDeciOPB);
+  if(sprintf(charDeciOPB, "%05u", HexArrayToUInt16(iOPB))) {
+    sci0_txStrXY(6, 19, charDeciOPB);
+  }
+
+  if(sprintf(charDeciOPA, "%05u", HexArrayToUInt16(iOPA))) {
+    sci0_txStrXY(5, 19, charDeciOPA); 
+  }
 
   sci0_GoToXY(11, 11);
   sci0_ShowBin16(result);
