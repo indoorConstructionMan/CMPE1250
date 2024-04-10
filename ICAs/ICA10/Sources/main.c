@@ -28,9 +28,9 @@
 /********************************************************************/
 //Defines
 /********************************************************************/
-#define tier1
+//#define tier1
 //#define tier2
-//#define tier3
+#define tier3
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
@@ -49,6 +49,8 @@ unsigned int numberOfTimesChanged = 0;
 
 // T3
 unsigned int held = 0;
+unsigned int myCaretArray[6] = {0b10000001, 0b10001000, 0b10000010, 0b11000000, 0b10100000, 0b10010000};
+unsigned int caretIndex = 0;
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -110,85 +112,82 @@ void main(void)
   Segs_16H(numberOfTimesChanged, Segs_LineBottom);
   for (;;) 
   {
-    Segs_Custom(caretPosition, 0b10000001);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10001000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10000010);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b11000000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10100000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10010000);
-    RTI_Delay(delayInMs);
+    Segs_Custom(caretPosition, myCaretArray[caretIndex%6]);
     
-    if (SWL_Pushed(SWL_RIGHT) == 1) {
-      Segs_ClearDigit(caretPosition);
-      if (caretPosition != 3) {
-        caretPosition++;
-        numberOfTimesChanged++;
-        Segs_16H(numberOfTimesChanged, Segs_LineBottom);
-      }
-    } else if (SWL_Pushed(SWL_LEFT) == 1) {
-      Segs_ClearDigit(caretPosition);
-      if (caretPosition != 0) {
-        caretPosition--;  
-        numberOfTimesChanged++;
-        Segs_16H(numberOfTimesChanged, Segs_LineBottom);
-      }
-    }
-    
-    loopCount++;
-  }
-  #endif
-
-  #ifdef tier3
-  Segs_16H(numberOfTimesChanged, Segs_LineBottom);
-  for (;;) 
-  {   
-    Segs_Custom(caretPosition, 0b10000001);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10001000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10000010);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b11000000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10100000);
-    RTI_Delay(delayInMs);
-    Segs_Custom(caretPosition, 0b10010000);
-    RTI_Delay(delayInMs);
-    
-    if (SWL_Pushed(SWL_RIGHT) == 1) {
-      if (held == 0) {
-        held = 1;
-      } else {
+    if (caretIndex % 10 == 0) {
+      if (SWL_Pushed(SWL_RIGHT) == 1) {
         Segs_ClearDigit(caretPosition);
         if (caretPosition != 3) {
           caretPosition++;
           numberOfTimesChanged++;
           Segs_16H(numberOfTimesChanged, Segs_LineBottom);
         }
-        held = 0;
-      }
-    } else if (SWL_Pushed(SWL_LEFT) == 1) {
-      if (held == 0) {
-        held = 1;
-      } else {
+      } else if (SWL_Pushed(SWL_LEFT) == 1) {
         Segs_ClearDigit(caretPosition);
         if (caretPosition != 0) {
           caretPosition--;  
           numberOfTimesChanged++;
           Segs_16H(numberOfTimesChanged, Segs_LineBottom);
         }
-        held = 0;
       }
-    } else {
-      held = 0;
     }
+    
     loopCount++;
-  
+    RTI_Delay(delayInMs);
+    caretIndex++;
+  }
+  #endif
+
+  #ifdef tier3
+  Segs_16H(numberOfTimesChanged, Segs_LineBottom);
+  for (;;) 
+  {
+    // Every loop, draw the carret in myCaretArray at caretIndex, at Caret Position
+    Segs_Custom(caretPosition, myCaretArray[caretIndex%6]);
+    
+    // every 10 loops, check if held has been incremented 10 times
+    if (caretIndex % 10 == 0 && held >= 10) {
+
+      // If switch right is pushed, move caret position if it hasnt' reached the edge
+      if (SWL_Pushed(SWL_RIGHT) == 1) {
+        Segs_ClearDigit(caretPosition);
+        if (caretPosition != 3) {
+          caretPosition++;
+          numberOfTimesChanged++;
+          Segs_16H(numberOfTimesChanged, Segs_LineBottom);
+        }
+      } 
+
+      // If switch left is pushed, move caret position if it hasnt' reached the edge
+      else if (SWL_Pushed(SWL_LEFT) == 1) {
+        Segs_ClearDigit(caretPosition);
+        if (caretPosition != 0) {
+          caretPosition--;  
+          numberOfTimesChanged++;
+          Segs_16H(numberOfTimesChanged, Segs_LineBottom);
+        }
+      }
+
+      // If a button pressed resulted in the caret moving, then reset the held variable to 1.
+      held = 1;
+    } 
+    
+    // if the caret is not divisible by 10, check if the button is pressed.
+    // if it is, then increment the held variable. If no button is pressed,
+    // then reset the held variable to 1.
+    else {
+      if (SWL_Pushed(SWL_LEFT) == 1) {
+        held++;
+      } else if (SWL_Pushed(SWL_RIGHT) == 1) {
+        held++;
+      } else {
+        held = 1;
+      }
+    }
+    
+    loopCount++;
+    RTI_Delay(delayInMs);
+    caretIndex++;
   }
   #endif
 }
