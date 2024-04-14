@@ -128,7 +128,7 @@ void Segs_16H (unsigned int value, Segs_LineOption lo) {
     }
 }
 
-// Not tested
+
 void Segs_16D (unsigned int value, Segs_LineOption lo) {
     int i = 0;
     int loopTill = 4;

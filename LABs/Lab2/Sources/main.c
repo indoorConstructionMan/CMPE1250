@@ -99,7 +99,6 @@ void main(void)
     if (timer % 4 == 0 && timer % 20 != 0) {
       Segs_Custom(dpAddress % 4 + 4, 0);
       dpAddress++;
-      if (dpAddress == 4) dpAddress = 0;
     }
     
     timer++;
