@@ -132,5 +132,4 @@ void Segs_8H (unsigned char address, unsigned char value);
 /* Params: (line) */
 void Segs_SayErr (Segs_LineOption lo);
 
-
-
+void Segs_16DParam (unsigned int value, Segs_LineOption lo, int editPos);

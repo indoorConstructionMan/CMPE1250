@@ -53,3 +53,27 @@ unsigned int HexArrayToUInt16(char *pArray) {
   }
   return myBinaryValue;
 }
+
+// only works for values between 0 -> 9999
+// value to be modified and returned, editposition msb -> 0, lsb -> 3, increment = 0 => subtract, increment = 1 => add
+unsigned int ModifyDecimalValue(unsigned int value, int editPosition, int increment) {
+  unsigned int returnValue = 0;
+  unsigned int tempDigit = 0;
+  int i = 0;
+
+  while (i <= 3) {
+    tempDigit = value % 10;
+    
+    if (3 - i == editPosition) {
+      if (increment == 1) {
+        tempDigit = (tempDigit + 1) % 10;
+      } else if (increment == 0) {
+        tempDigit = (tempDigit + 10 - 1) % 10;
+      }
+    } 
+    returnValue += tempDigit * Power(10, i);
+    value = value / 10;
+    i++;
+  }
+  return returnValue;
+}

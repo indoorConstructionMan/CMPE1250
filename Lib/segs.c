@@ -150,6 +150,35 @@ void Segs_16D (unsigned int value, Segs_LineOption lo) {
     }
 }
 
+void Segs_16DParam (unsigned int value, Segs_LineOption lo, int editPos) {
+    int i = 0;
+    int loopTill = 4;
+
+    if (lo == Segs_LineTop) {
+        Segs_ClearLine(Segs_LineTop);
+        for (i; i < loopTill; i++) {
+            if (loopTill - i - 1 == editPos) {
+                Segs_Normal(loopTill - i - 1, value % 10, Segs_DP_ON);        
+            } else {
+                Segs_Normal(loopTill - i - 1, value % 10, Segs_DP_OFF);    
+            }
+            value = value / 10;
+        }
+    } else {
+        Segs_ClearLine(Segs_LineBottom);
+        i = 4;
+        loopTill = 7;
+        for (loopTill; loopTill >= i; loopTill--) {
+            if (loopTill - i == editPos) {
+                Segs_Normal(loopTill, value % 10, Segs_DP_ON);    
+            } else {
+                Segs_Normal(loopTill, value % 10, Segs_DP_OFF);    
+            }
+            value = value / 10;
+        }
+    }
+}
+
 void Segs_8H (unsigned char address, unsigned char value) {
     Segs_ClearDigit((address) % 8);
     Segs_ClearDigit((address + 1) % 8);
