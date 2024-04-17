@@ -20,6 +20,7 @@ void lcd_Init (void) {
     lcd_EDown;
     lcd_RSDown;
     lcd_MicroDelay;       
+    lcd_MacroDelay;
     // first attempt to send command
 
     lcd_EUp;
@@ -27,6 +28,7 @@ void lcd_Init (void) {
     lcd_EDown;
     lcd_RSDown;
     lcd_MicroDelay;        
+    lcd_MacroDelay;
     // second attempt to send command
 
     lcd_EUp;
@@ -34,12 +36,20 @@ void lcd_Init (void) {
     lcd_EDown;
     lcd_RSDown;
     lcd_MicroDelay;
+    lcd_MacroDelay;
     // third attempt to send command. busy flag should work now?!
 
     lcd_Ins(0b00111000);        // function set: 8 bits, 2 lines, 5x7 dots
+    lcd_MacroDelay;
+
     lcd_Ins(0b00001111);        // display on/off ctl: increment,display shift,cursor blink
+    lcd_MacroDelay;
+
     lcd_Ins(0b00000001);        // clear entire display, set address to 0   
-    //lcd_Ins(0b00000110);        // entry mode set: increment
+    lcd_MacroDelay;
+
+    lcd_Ins(0b00000110);        // entry mode set: increment
+    lcd_MacroDelay;
 }
 
 char lcd_Busy (void) {
@@ -54,7 +64,7 @@ char lcd_Busy (void) {
 }
 
 void lcd_Ins (unsigned char val) {
-    while (lcd_Busy());
+    while (lcd_Busy() > 0);
 
     lcd_RWDown;     // Writing
     lcd_RSDown;     // command
@@ -63,11 +73,13 @@ void lcd_Ins (unsigned char val) {
 
     lcd_EUp;
     lcd_MicroDelay;
-    lcd_EDown;      // and latch
+    lcd_EDown;      // and latch  
+
+    lcd_MacroDelay;
 }
 
 void lcd_Data (unsigned char val) {
-    while (lcd_Busy());
+    while (lcd_Busy() > 0);
 
     lcd_RWDown;     // Writing
     lcd_RSUp;     // data
@@ -76,14 +88,16 @@ void lcd_Data (unsigned char val) {
 
     lcd_EUp;
     lcd_MicroDelay;
-    lcd_EDown;      // and latch
+    lcd_EDown;      // and latch    
 
+    lcd_MacroDelay;
 }
 
 void lcd_String (char const * cString) {
     while(*cString != '\0') {
         lcd_Data(*cString++);
     }
+    lcd_Data(' ');
 }
 
 void lcd_Addr (unsigned char addr) {

@@ -36,6 +36,7 @@
 #define SHIFT_SCR (1<<3)
 
 #define lcd_MicroDelay { char __x = 10; while (--__x); } // 20MHz Version
+#define lcd_MacroDelay { int __x = 10000; while (--__x); } // 20MHz Version
 #define lcd_Latch {PORTK_PK0 = 1;lcd_MicroDelay;PORTK_PK0 = 0;}
 
 // Reading/Writing respectively. PortH is data/command bus.

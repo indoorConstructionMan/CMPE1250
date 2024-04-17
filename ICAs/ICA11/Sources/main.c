@@ -18,6 +18,7 @@
 #include "pll_clock.h"
 #include "lcd.h"
 #include "rti.h"
+#include "sw_led.h"
 
 //Other system includes or your includes go here
 //#include <stdlib.h>
@@ -27,7 +28,7 @@
 /********************************************************************/
 //Defines
 /********************************************************************/
-
+#define lcd_MicroDely { int __x = 10000; while (--__x); }
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
@@ -36,6 +37,7 @@
 // Global Variables
 /********************************************************************/
 int i;
+int delay = 2;
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -54,6 +56,11 @@ void main(void)
   // PLL Clock set to 20MHz
   Clock_Set20MHZ();
 
+  // switch init
+  SWL_Init();
+
+  RTI_Init();
+
   //lcd Init
   lcd_Init();
 /********************************************************************/
@@ -63,10 +70,28 @@ void main(void)
 /********************************************************************/
   // main program loop
 /********************************************************************/
-  lcd_Ins(0b00000001);
-  lcd_Ins(0b00000010);
+
+  lcd_Ins(0b00000001);    // clear display set cursor to 0 pos
+
+  // lcd_Data('A');
+
+  // lcd_Data('N');
+
+  // lcd_Data('T');
+
+  // lcd_Data('H');
+
+  // lcd_Data('O');
   
-  lcd_Data('A');
+  // lcd_Data('N');
+  
+  
+  // lcd_Data('Y');
+  
+
+  // lcd_Data(' ');
+
+  lcd_String("Embedded Is Fun, Hi Bryce, What's up man?! This is cool!");
   
   for (;;)
   {
