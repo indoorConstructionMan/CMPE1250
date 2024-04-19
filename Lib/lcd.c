@@ -98,7 +98,6 @@ void lcd_String (char const * cString) {
     while(*cString != '\0') {
         lcd_Data(*cString++);
     }
-    //lcd_Data(' ');
 }
 
 void lcd_Addr (unsigned char addr) {
@@ -157,4 +156,8 @@ void lcd_ShiftL (void) {
 void lcd_ShiftR (void) {
     lcd_Ins(0b00010100);
     //lcd_Ins(0b00011100); Shift whole display to right
+}
+
+void lcd_ShiftU (void) {
+    
 }

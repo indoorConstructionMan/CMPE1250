@@ -85,7 +85,10 @@ void main(void)
   lcd_StringXY(0, 2, "This is spam!");
   lcd_AddrXY(10, 1);
   lcd_DispControl(0, 1);
-  lcd_Clear();
+  
+  
+  
+  //lcd_Clear();
   
   for (;;)
   {
@@ -113,7 +116,7 @@ void main(void)
     swDownOld = swDownCurr;
     swCtrOld = swCtrCurr;
 
-    lcd_DispControl(1, 0);
+    lcd_DispControl(1, 1);
   }                   
 }
 
