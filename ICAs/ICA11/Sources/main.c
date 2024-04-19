@@ -28,7 +28,7 @@
 /********************************************************************/
 //Defines
 /********************************************************************/
-#define lcd_MicroDely { int __x = 10000; while (--__x); }
+
 /********************************************************************/
 // Local Prototypes
 /********************************************************************/
@@ -36,8 +36,10 @@
 /********************************************************************/
 // Global Variables
 /********************************************************************/
-int i;
-int delay = 2;
+int swUpOld, swDownOld, swLeftOld, swRightOld;
+int swUpCurr, swDownCurr, swLeftCurr, swRightCurr;
+int swCtrCurr, swCtrOld;
+int cursor;
 /********************************************************************/
 // Constants
 /********************************************************************/
@@ -56,46 +58,62 @@ void main(void)
   // PLL Clock set to 20MHz
   Clock_Set20MHZ();
 
-  // switch init
   SWL_Init();
-
-  RTI_Init();
 
   //lcd Init
   lcd_Init();
 /********************************************************************/
   // one-time initializations
 /********************************************************************/
-  i = 0;
+  swUpOld = 0;
+  swDownOld = 0;
+  swLeftOld = 0;
+  swRightOld = 0;
+  swUpCurr = 0;
+  swDownCurr = 0;
+  swLeftCurr = 0;
+  swRightCurr = 0;
+  swCtrCurr = 0;
+  swCtrOld = 0;
+  cursor = 0;
 /********************************************************************/
   // main program loop
 /********************************************************************/
-
-  lcd_Ins(0b00000001);    // clear display set cursor to 0 pos
-
-  // lcd_Data('A');
-
-  // lcd_Data('N');
-
-  // lcd_Data('T');
-
-  // lcd_Data('H');
-
-  // lcd_Data('O');
-  
-  // lcd_Data('N');
-  
-  
-  // lcd_Data('Y');
-  
-
-  // lcd_Data(' ');
-
-  lcd_String("Embedded Is Fun, Hi Bryce, What's up man?! This is cool!");
+  lcd_Data('Q');
+  lcd_AddrXY(1, 3);
+  lcd_String("Hello");
+  lcd_StringXY(0, 2, "This is spam!");
+  lcd_AddrXY(10, 1);
+  lcd_DispControl(0, 1);
+  lcd_Clear();
   
   for (;;)
   {
-    
+    swLeftCurr = SWL_Pushed(SWL_LEFT);
+    swRightCurr = SWL_Pushed(SWL_RIGHT);
+    swUpCurr = SWL_Pushed(SWL_UP);
+    swDownCurr = SWL_Pushed(SWL_DOWN);
+    swCtrCurr = SWL_Pushed(SWL_CTR);
+
+    if ((swRightCurr != swRightOld) && swRightCurr) {
+      lcd_ShiftR();
+    } else if ((swLeftCurr != swLeftOld) && swLeftCurr) {
+      lcd_ShiftL();
+    } else if ((swUpCurr != swUpOld) && swUpCurr) {
+      //lcd_ShiftU();
+    } else if ((swDownCurr != swDownOld) && swDownCurr) {
+      lcd_String("     ");
+    } else if ((swCtrCurr != swCtrOld) && swCtrCurr) {
+      lcd_String("Hello");
+    }       
+
+    swLeftOld = swLeftCurr;
+    swRightOld = swRightCurr;
+    swUpOld = swUpCurr;
+    swDownOld = swDownCurr;
+    swCtrOld = swCtrCurr;
+
+    lcd_DispControl(1, 0);
   }                   
 }
 

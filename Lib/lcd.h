@@ -69,7 +69,8 @@ void lcd_StringXY (unsigned char ix, unsigned char iy, char const * const stradd
 void lcd_DispControl (unsigned char curon, unsigned char blinkon);
 void lcd_Clear (void);
 void lcd_Home (void);
-void lcd_ShiftL (char);
-void lcd_ShiftR (char);
+void lcd_ShiftL (void);
+void lcd_ShiftR (void);
+void lcd_ShiftU (void);
 void lcd_CGAddr (unsigned char addr);
 void lcd_CGChar (unsigned char cgAddr, unsigned const char* cgData, int size);
