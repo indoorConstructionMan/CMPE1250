@@ -160,3 +160,7 @@ void lcd_ShiftR (void) {
     lcd_Ins(0b00010100);
     //lcd_Ins(0b00011100); Shift whole display to right
 }
+
+void lcd_ShiftU (void) {
+    
+}
