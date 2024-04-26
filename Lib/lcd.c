@@ -98,7 +98,9 @@ void lcd_String (char const * cString) {
     while(*cString != '\0') {
         lcd_Data(*cString++);
     }
-    //lcd_Data(' ');
+    // previous lab worked without next two lines.
+    lcd_Data(' ');
+    lcd_ShiftL();
 }
 
 void lcd_Addr (unsigned char addr) {
